@@ -1,0 +1,188 @@
+// Food menu data with placeholder images
+const menuData = {
+    burger: [
+        {
+            id: 'b1',
+            name: 'Classic Smash Burger',
+            price: 350,
+            image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop',
+            description: 'Double smashed patty, cheddar, pickles, secret sauce',
+        },
+        {
+            id: 'b2',
+            name: 'BBQ Bacon Beast',
+            price: 420,
+            image: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400&h=300&fit=crop',
+            description: 'Smoky BBQ, crispy bacon, caramelized onions',
+        },
+        {
+            id: 'b3',
+            name: 'Spicy Jalapeño',
+            price: 380,
+            image: 'https://images.unsplash.com/photo-1572802419224-296b0aeee15d?w=400&h=300&fit=crop',
+            description: 'Fire-grilled patty, jalapeños, pepper jack',
+        },
+        {
+            id: 'b4',
+            name: 'Mushroom Swiss',
+            price: 400,
+            image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&h=300&fit=crop',
+            description: 'Sautéed mushrooms, Swiss cheese, truffle aioli',
+        },
+        {
+            id: 'b5',
+            name: 'Chicken Crunch',
+            price: 360,
+            image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&h=300&fit=crop',
+            description: 'Crispy fried chicken, coleslaw, honey mustard',
+        },
+        {
+            id: 'b6',
+            name: 'Double Trouble',
+            price: 480,
+            image: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400&h=300&fit=crop',
+            description: 'Two patties, double cheese, extra everything',
+        },
+    ],
+    pizza: [
+        {
+            id: 'p1',
+            name: 'Margherita Classic',
+            price: 550,
+            image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&h=300&fit=crop',
+            description: 'Fresh mozzarella, basil, San Marzano tomatoes',
+        },
+        {
+            id: 'p2',
+            name: 'Pepperoni Feast',
+            price: 650,
+            image: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&h=300&fit=crop',
+            description: 'Loaded pepperoni, mozzarella, oregano',
+        },
+        {
+            id: 'p3',
+            name: 'BBQ Chicken',
+            price: 700,
+            image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop',
+            description: 'Grilled chicken, BBQ sauce, red onions, cilantro',
+        },
+        {
+            id: 'p4',
+            name: 'Veggie Supreme',
+            price: 600,
+            image: 'https://images.unsplash.com/photo-1511689660979-10d2b1aada49?w=400&h=300&fit=crop',
+            description: 'Bell peppers, olives, mushrooms, onions, corn',
+        },
+        {
+            id: 'p5',
+            name: 'Meat Lovers',
+            price: 750,
+            image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop',
+            description: 'Beef, chicken, sausage, pepperoni, bacon',
+        },
+        {
+            id: 'p6',
+            name: 'Four Cheese',
+            price: 680,
+            image: 'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=400&h=300&fit=crop',
+            description: 'Mozzarella, cheddar, parmesan, gouda',
+        },
+    ],
+    setmenu: [
+        {
+            id: 's1',
+            name: 'Burger Combo',
+            price: 550,
+            image: 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=400&h=300&fit=crop',
+            description: 'Classic burger + fries + regular drink',
+        },
+        {
+            id: 's2',
+            name: 'Pizza Combo',
+            price: 750,
+            image: 'https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?w=400&h=300&fit=crop',
+            description: '8" pizza + garlic bread + regular drink',
+        },
+        {
+            id: 's3',
+            name: 'Family Feast',
+            price: 1500,
+            image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=300&fit=crop',
+            description: '12" pizza + 2 burgers + fries + 4 drinks',
+        },
+        {
+            id: 's4',
+            name: 'Student Special',
+            price: 399,
+            image: 'https://images.unsplash.com/photo-1561758033-d89a9ad46330?w=400&h=300&fit=crop',
+            description: 'Mini burger + small fries + can drink',
+        },
+        {
+            id: 's5',
+            name: 'Duo Deal',
+            price: 899,
+            image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop',
+            description: '2 burgers + large fries + 2 drinks',
+        },
+        {
+            id: 's6',
+            name: 'Party Pack',
+            price: 2200,
+            image: 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=400&h=300&fit=crop',
+            description: '2 large pizzas + 4 burgers + fries + 6 drinks',
+        },
+    ],
+    drinks: [
+        {
+            id: 'd1',
+            name: 'Classic Lemonade',
+            price: 120,
+            image: 'https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=400&h=300&fit=crop',
+            description: 'Freshly squeezed lemons, mint, ice',
+        },
+        {
+            id: 'd2',
+            name: 'Mango Smoothie',
+            price: 180,
+            image: 'https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=400&h=300&fit=crop',
+            description: 'Fresh mango, yogurt, honey blend',
+        },
+        {
+            id: 'd3',
+            name: 'Iced Coffee',
+            price: 150,
+            image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&h=300&fit=crop',
+            description: 'Cold brew, milk, caramel drizzle',
+        },
+        {
+            id: 'd4',
+            name: 'Berry Blast',
+            price: 200,
+            image: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=400&h=300&fit=crop',
+            description: 'Mixed berries, banana, almond milk',
+        },
+        {
+            id: 'd5',
+            name: 'Coca-Cola',
+            price: 80,
+            image: 'https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&h=300&fit=crop',
+            description: 'Ice-cold classic Coca-Cola',
+        },
+        {
+            id: 'd6',
+            name: 'Mojito Mocktail',
+            price: 160,
+            image: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=300&fit=crop',
+            description: 'Lime, mint, soda, sugar syrup',
+        },
+    ],
+};
+
+export const categories = [
+    { id: 'burger', name: 'Burgers', emoji: '🍔' },
+    { id: 'pizza', name: 'Pizza', emoji: '🍕' },
+    { id: 'setmenu', name: 'Set Menu', emoji: '🍱' },
+    { id: 'drinks', name: 'Drinks', emoji: '🥤' },
+];
+
+export default menuData;
