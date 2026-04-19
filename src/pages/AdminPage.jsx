@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
+import { motion } from 'framer-motion';
 import {
     Shield,
     Clock,
@@ -10,8 +11,20 @@ import {
     Hash,
     DollarSign,
     LayoutList,
-    RefreshCw,
 } from 'lucide-react';
+
+const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+        opacity: 1,
+        transition: { staggerChildren: 0.1 }
+    }
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+};
 
 const AdminPage = () => {
     const { orders, updateOrderStatus } = useCart();
@@ -46,9 +59,14 @@ const AdminPage = () => {
 
     return (
         <div className="min-h-screen pt-24 pb-24 md:pb-8 px-4">
-            <div className="max-w-7xl mx-auto">
+            <motion.div
+                className="max-w-7xl mx-auto"
+                variants={containerVariants}
+                initial="hidden"
+                animate="show"
+            >
                 {/* Header */}
-                <div className="mb-8 opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
+                <motion.div variants={itemVariants} className="mb-8">
                     <div className="flex items-center gap-3 mb-2">
                         <Shield size={28} className="text-[var(--color-primary)]" />
                         <h1 className="text-3xl sm:text-4xl font-black">
@@ -58,10 +76,10 @@ const AdminPage = () => {
                     <p className="text-[var(--color-text-muted)]">
                         Manage orders and track their status in real-time
                     </p>
-                </div>
+                </motion.div>
 
                 {/* Stats Cards */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8 opacity-0 animate-fade-in-up delay-100" style={{ animationFillMode: 'forwards' }}>
+                <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8">
                     <StatsCard
                         label="Total Orders"
                         count={statusCounts.all}
@@ -90,38 +108,40 @@ const AdminPage = () => {
                         color="text-[var(--color-done)]"
                         bg="bg-[var(--color-done)]/10"
                     />
-                </div>
+                </motion.div>
 
                 {/* Filters */}
-                <div className="flex items-center gap-2 mb-6 flex-wrap opacity-0 animate-fade-in-up delay-200" style={{ animationFillMode: 'forwards' }}>
+                <motion.div variants={itemVariants} className="flex items-center gap-2 mb-6 flex-wrap">
                     <LayoutList size={18} className="text-[var(--color-text-muted)]" />
                     {['all', 'Pending', 'Preparing', 'Done'].map((f) => (
-                        <button
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                             key={f}
                             onClick={() => setFilter(f)}
                             className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${filter === f
-                                    ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/30'
-                                    : 'glass text-[var(--color-text-muted)] hover:text-white hover:bg-white/10'
+                                ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/30'
+                                : 'glass text-[var(--color-text-muted)] hover:text-white hover:bg-white/10'
                                 }`}
                         >
                             {f === 'all' ? 'All' : f} ({statusCounts[f]})
-                        </button>
+                        </motion.button>
                     ))}
-                </div>
+                </motion.div>
 
                 {/* Orders */}
                 {filteredOrders.length === 0 ? (
-                    <div className="text-center py-20 opacity-0 animate-fade-in" style={{ animationFillMode: 'forwards' }}>
+                    <motion.div variants={itemVariants} className="text-center py-20">
                         <span className="text-6xl block mb-4">📋</span>
                         <h3 className="text-xl font-bold text-white mb-2">No orders yet</h3>
                         <p className="text-[var(--color-text-muted)]">
                             Orders will appear here when customers place them
                         </p>
-                    </div>
+                    </motion.div>
                 ) : (
                     <>
                         {/* Desktop Table */}
-                        <div className="hidden lg:block glass-card overflow-hidden opacity-0 animate-fade-in-up delay-300" style={{ animationFillMode: 'forwards' }}>
+                        <motion.div variants={itemVariants} className="hidden lg:block glass-card overflow-hidden">
                             <div className="overflow-x-auto">
                                 <table className="w-full">
                                     <thead>
@@ -150,7 +170,7 @@ const AdminPage = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {filteredOrders.map((order, index) => (
+                                        {filteredOrders.map((order) => (
                                             <tr
                                                 key={order.token}
                                                 className="border-b border-white/5 hover:bg-white/5 transition-colors"
@@ -182,29 +202,32 @@ const AdminPage = () => {
                                                     {order.time}
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <span
+                                                    <motion.span
+                                                        layout
                                                         className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${statusConfig[order.status]?.color}`}
                                                     >
                                                         {statusConfig[order.status]?.icon}
                                                         {order.status}
-                                                    </span>
+                                                    </motion.span>
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center justify-end gap-1">
                                                         {['Pending', 'Preparing', 'Done'].map((status) => (
-                                                            <button
+                                                            <motion.button
+                                                                whileHover={{ scale: 1.05 }}
+                                                                whileTap={{ scale: 0.95 }}
                                                                 key={status}
                                                                 onClick={() =>
                                                                     updateOrderStatus(order.token, status)
                                                                 }
                                                                 disabled={order.status === status}
                                                                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${order.status === status
-                                                                        ? 'bg-white/5 text-[var(--color-text-dim)] cursor-not-allowed'
-                                                                        : 'hover:bg-white/10 text-[var(--color-text-muted)] hover:text-white'
+                                                                    ? 'bg-white/5 text-[var(--color-text-dim)] cursor-not-allowed'
+                                                                    : 'hover:bg-white/10 text-[var(--color-text-muted)] hover:text-white'
                                                                     }`}
                                                             >
                                                                 {status}
-                                                            </button>
+                                                            </motion.button>
                                                         ))}
                                                     </div>
                                                 </td>
@@ -213,30 +236,28 @@ const AdminPage = () => {
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </motion.div>
 
                         {/* Mobile Cards */}
                         <div className="lg:hidden space-y-4">
-                            {filteredOrders.map((order, index) => (
-                                <div
+                            {filteredOrders.map((order) => (
+                                <motion.div
+                                    variants={itemVariants}
                                     key={order.token}
-                                    className="glass-card p-4 opacity-0 animate-fade-in-up"
-                                    style={{
-                                        animationDelay: `${index * 0.08 + 0.3}s`,
-                                        animationFillMode: 'forwards',
-                                    }}
+                                    className="glass-card p-4"
                                 >
                                     {/* Top Row */}
                                     <div className="flex items-center justify-between mb-3">
                                         <span className="font-bold text-lg text-[var(--color-primary)]">
                                             {order.token}
                                         </span>
-                                        <span
+                                        <motion.span
+                                            layout
                                             className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${statusConfig[order.status]?.color}`}
                                         >
                                             {statusConfig[order.status]?.icon}
                                             {order.status}
-                                        </span>
+                                        </motion.span>
                                     </div>
 
                                     {/* Info */}
@@ -273,35 +294,37 @@ const AdminPage = () => {
                                     {/* Status Buttons */}
                                     <div className="flex items-center gap-2">
                                         {['Pending', 'Preparing', 'Done'].map((status) => (
-                                            <button
+                                            <motion.button
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
                                                 key={status}
                                                 onClick={() => updateOrderStatus(order.token, status)}
                                                 disabled={order.status === status}
                                                 className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${order.status === status
-                                                        ? `${statusConfig[status]?.color} border`
-                                                        : 'bg-white/5 text-[var(--color-text-muted)] hover:bg-white/10 hover:text-white'
+                                                    ? `${statusConfig[status]?.color} border`
+                                                    : 'bg-white/5 text-[var(--color-text-muted)] hover:bg-white/10 hover:text-white'
                                                     }`}
                                             >
                                                 {status}
-                                            </button>
+                                            </motion.button>
                                         ))}
                                     </div>
-                                </div>
+                                </motion.div>
                             ))}
                         </div>
                     </>
                 )}
-            </div>
+            </motion.div>
         </div>
     );
 };
 
 const StatsCard = ({ label, count, icon, color, bg }) => (
-    <div className={`glass-card p-4 ${bg} border-none`}>
+    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className={`glass-card p-4 ${bg} border-none`}>
         <div className={`${color} mb-2`}>{icon}</div>
         <p className="text-2xl font-black text-white">{count}</p>
         <p className="text-xs text-[var(--color-text-muted)]">{label}</p>
-    </div>
+    </motion.div>
 );
 
 export default AdminPage;
