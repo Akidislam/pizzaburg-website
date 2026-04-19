@@ -1,4 +1,5 @@
 import { createContext, useContext, useReducer, useEffect } from 'react';
+import staticMenuData, { categories } from '../data/menuData';
 
 const CartContext = createContext();
 
@@ -29,9 +30,20 @@ const loadOrders = () => {
     }
 };
 
+// Load menu from localStorage
+const loadMenu = () => {
+    try {
+        const saved = localStorage.getItem('pb_menu');
+        return saved ? JSON.parse(saved) : staticMenuData;
+    } catch {
+        return staticMenuData;
+    }
+};
+
 const initialState = {
     cart: loadCart(),
     orders: loadOrders(),
+    menu: loadMenu(),
     lastOrder: null,
 };
 
@@ -111,6 +123,14 @@ const cartReducer = (state, action) => {
             return { ...state, orders: newOrders };
         }
 
+        case 'ADD_MENU_ITEM': {
+            const { category, item } = action.payload;
+            const newMenu = { ...state.menu };
+            if (!newMenu[category]) newMenu[category] = [];
+            newMenu[category] = [item, ...newMenu[category]];
+            return { ...state, menu: newMenu };
+        }
+
         default:
             return state;
     }
@@ -119,48 +139,30 @@ const cartReducer = (state, action) => {
 export const CartProvider = ({ children }) => {
     const [state, dispatch] = useReducer(cartReducer, initialState);
 
-    // Persist cart to localStorage
+    // Persist to localStorage
     useEffect(() => {
         localStorage.setItem('pb_cart', JSON.stringify(state.cart));
     }, [state.cart]);
 
-    // Persist orders to localStorage
     useEffect(() => {
         localStorage.setItem('pb_orders', JSON.stringify(state.orders));
     }, [state.orders]);
 
-    const addToCart = (item) => {
-        dispatch({ type: 'ADD_TO_CART', payload: item });
-    };
+    useEffect(() => {
+        localStorage.setItem('pb_menu', JSON.stringify(state.menu));
+    }, [state.menu]);
 
-    const removeFromCart = (id) => {
-        dispatch({ type: 'REMOVE_FROM_CART', payload: id });
-    };
+    const addToCart = (item) => dispatch({ type: 'ADD_TO_CART', payload: item });
+    const removeFromCart = (id) => dispatch({ type: 'REMOVE_FROM_CART', payload: id });
+    const updateQuantity = (id, quantity) => dispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
+    const clearCart = () => dispatch({ type: 'CLEAR_CART' });
+    const placeOrder = (phone) => dispatch({ type: 'PLACE_ORDER', payload: { phone } });
+    const updateOrderStatus = (token, status) => dispatch({ type: 'UPDATE_ORDER_STATUS', payload: { token, status } });
 
-    const updateQuantity = (id, quantity) => {
-        dispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
-    };
+    // Admin specific
+    const addMenuItem = (category, item) => dispatch({ type: 'ADD_MENU_ITEM', payload: { category, item } });
 
-    const clearCart = () => {
-        dispatch({ type: 'CLEAR_CART' });
-    };
-
-    const placeOrder = (phone) => {
-        dispatch({ type: 'PLACE_ORDER', payload: { phone } });
-    };
-
-    const updateOrderStatus = (token, status) => {
-        dispatch({
-            type: 'UPDATE_ORDER_STATUS',
-            payload: { token, status },
-        });
-    };
-
-    const cartTotal = state.cart.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-    );
-
+    const cartTotal = state.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const cartCount = state.cart.reduce((sum, item) => sum + item.quantity, 0);
 
     return (
@@ -168,6 +170,8 @@ export const CartProvider = ({ children }) => {
             value={{
                 cart: state.cart,
                 orders: state.orders,
+                menu: state.menu,
+                categories,
                 lastOrder: state.lastOrder,
                 cartTotal,
                 cartCount,
@@ -177,6 +181,7 @@ export const CartProvider = ({ children }) => {
                 clearCart,
                 placeOrder,
                 updateOrderStatus,
+                addMenuItem,
             }}
         >
             {children}
@@ -186,9 +191,7 @@ export const CartProvider = ({ children }) => {
 
 export const useCart = () => {
     const context = useContext(CartContext);
-    if (!context) {
-        throw new Error('useCart must be used within a CartProvider');
-    }
+    if (!context) throw new Error('useCart must be used within a CartProvider');
     return context;
 };
 

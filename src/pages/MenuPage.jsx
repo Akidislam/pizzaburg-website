@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import menuData, { categories } from '../data/menuData';
+import { useCart } from '../context/CartContext';
 import FoodCard from '../components/FoodCard';
 import { Search, X } from 'lucide-react';
 
 const MenuPage = () => {
+    const { menu, categories } = useCart();
     const [activeCategory, setActiveCategory] = useState('burger');
     const [searchQuery, setSearchQuery] = useState('');
 
-    const currentItems = menuData[activeCategory] || [];
+    const currentItems = menu[activeCategory] || [];
 
     const filteredItems = searchQuery
-        ? Object.values(menuData)
+        ? Object.values(menu)
             .flat()
             .filter(
                 (item) =>
@@ -65,8 +66,8 @@ const MenuPage = () => {
                                 key={cat.id}
                                 onClick={() => setActiveCategory(cat.id)}
                                 className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-300 ${activeCategory === cat.id
-                                        ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/30 scale-105'
-                                        : 'glass text-[var(--color-text-muted)] hover:text-white hover:bg-white/10'
+                                    ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/30 scale-105'
+                                    : 'glass text-[var(--color-text-muted)] hover:text-white hover:bg-white/10'
                                     }`}
                             >
                                 <span>{cat.emoji}</span>
