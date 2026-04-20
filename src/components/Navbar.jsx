@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { ShoppingCart, Home, UtensilsCrossed, Shield } from 'lucide-react';
+import { ShoppingCart, Home, UtensilsCrossed } from 'lucide-react';
 
 const Navbar = () => {
     const { cartCount } = useCart();
@@ -24,7 +24,7 @@ const Navbar = () => {
                     <div className="hidden md:flex items-center gap-1">
                         <NavLink to="/" icon={<Home size={18} />} label="Home" active={isActive('/')} />
                         <NavLink to="/menu" icon={<UtensilsCrossed size={18} />} label="Menu" active={isActive('/menu')} />
-                        <NavLink to="/admin" icon={<Shield size={18} />} label="Admin" active={isActive('/admin')} />
+
                     </div>
 
                     {/* Cart Button */}
@@ -59,7 +59,7 @@ const Navbar = () => {
                         </span>
                     )}
                 </Link>
-                <MobileNavLink to="/admin" icon={<Shield size={20} />} label="Admin" active={isActive('/admin')} />
+
             </div>
         </nav>
     );
@@ -69,8 +69,8 @@ const NavLink = ({ to, icon, label, active }) => (
     <Link
         to={to}
         className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 ${active
-                ? 'bg-[var(--color-primary)]/15 text-[var(--color-primary)]'
-                : 'text-[var(--color-text-muted)] hover:text-white hover:bg-white/5'
+            ? 'bg-[var(--color-primary)]/15 text-[var(--color-primary)]'
+            : 'text-[var(--color-text-muted)] hover:text-white hover:bg-white/5'
             }`}
     >
         {icon}
@@ -82,8 +82,8 @@ const MobileNavLink = ({ to, icon, label, active }) => (
     <Link
         to={to}
         className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-all duration-300 ${active
-                ? 'text-[var(--color-primary)]'
-                : 'text-[var(--color-text-muted)]'
+            ? 'text-[var(--color-primary)]'
+            : 'text-[var(--color-text-muted)]'
             }`}
     >
         {icon}

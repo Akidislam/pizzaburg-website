@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { motion } from 'framer-motion';
 import {
@@ -14,7 +15,8 @@ import {
     PlusCircle,
     Utensils,
     TrendingUp,
-    Wallet
+    Wallet,
+    LogOut
 } from 'lucide-react';
 
 const containerVariants = {
@@ -34,6 +36,12 @@ const AdminPage = () => {
     const { orders, updateOrderStatus, addMenuItem, categories } = useCart();
     const [filter, setFilter] = useState('all');
     const [activeTab, setActiveTab] = useState('orders');
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem('admin_logged_in');
+        navigate('/admin-login');
+    };
 
     // Add Item Form State
     const [newItem, setNewItem] = useState({
@@ -101,34 +109,56 @@ const AdminPage = () => {
             >
                 {/* Header */}
                 <motion.div variants={itemVariants} className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <div className="flex items-center gap-3 mb-2">
-                            <Shield size={28} className="text-[var(--color-primary)]" />
-                            <h1 className="text-3xl sm:text-4xl font-black">
-                                Admin <span className="gradient-text">Panel</span>
-                            </h1>
+                    <div className="flex items-start justify-between">
+                        <div>
+                            <div className="flex items-center gap-3 mb-2">
+                                <Shield size={28} className="text-[var(--color-primary)]" />
+                                <h1 className="text-3xl sm:text-4xl font-black">
+                                    Admin <span className="gradient-text">Panel</span>
+                                </h1>
+                            </div>
+                            <p className="text-[var(--color-text-muted)]">
+                                Manage orders, view sales analytics, and update menu
+                            </p>
                         </div>
-                        <p className="text-[var(--color-text-muted)]">
-                            Manage orders, view sales analytics, and update menu
-                        </p>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={handleLogout}
+                            className="md:hidden flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400 transition-all duration-200 text-sm font-medium ml-4"
+                        >
+                            <LogOut size={15} />
+                            Logout
+                        </motion.button>
                     </div>
 
-                    {/* Tabs */}
-                    <div className="flex items-center gap-2 glass p-1.5 rounded-2xl w-full md:w-auto">
-                        <button
-                            onClick={() => setActiveTab('orders')}
-                            className={`flex flex-1 md:flex-none items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${activeTab === 'orders' ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/30' : 'text-[var(--color-text-muted)] hover:text-white hover:bg-white/5'}`}
+                    {/* Tabs + Logout */}
+                    <div className="flex items-center gap-2 w-full md:w-auto">
+                        <div className="flex items-center gap-2 glass p-1.5 rounded-2xl flex-1 md:flex-none">
+                            <button
+                                onClick={() => setActiveTab('orders')}
+                                className={`flex flex-1 md:flex-none items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${activeTab === 'orders' ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/30' : 'text-[var(--color-text-muted)] hover:text-white hover:bg-white/5'}`}
+                            >
+                                <Package size={16} />
+                                Orders
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('menu')}
+                                className={`flex flex-1 md:flex-none items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${activeTab === 'menu' ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/30' : 'text-[var(--color-text-muted)] hover:text-white hover:bg-white/5'}`}
+                            >
+                                <Utensils size={16} />
+                                Menu
+                            </button>
+                        </div>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={handleLogout}
+                            className="hidden md:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400 transition-all duration-200 text-sm font-medium"
                         >
-                            <Package size={16} />
-                            Orders
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('menu')}
-                            className={`flex flex-1 md:flex-none items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${activeTab === 'menu' ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/30' : 'text-[var(--color-text-muted)] hover:text-white hover:bg-white/5'}`}
-                        >
-                            <Utensils size={16} />
-                            Menu
-                        </button>
+                            <LogOut size={16} />
+                            Logout
+                        </motion.button>
                     </div>
                 </motion.div>
 

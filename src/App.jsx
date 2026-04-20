@@ -8,6 +8,8 @@ import MenuPage from './pages/MenuPage';
 import CartPage from './pages/CartPage';
 import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import AdminPage from './pages/AdminPage';
+import AdminLoginPage from './pages/AdminLoginPage';
+import ProtectedAdminRoute from './components/ProtectedAdminRoute';
 import PageTransition from './components/PageTransition';
 import Loader from './components/Loader';
 
@@ -21,7 +23,17 @@ function AppRoutes() {
         <Route path="/menu" element={<PageTransition><MenuPage /></PageTransition>} />
         <Route path="/cart" element={<PageTransition><CartPage /></PageTransition>} />
         <Route path="/order-confirmation" element={<PageTransition><OrderConfirmationPage /></PageTransition>} />
-        <Route path="/admin" element={<PageTransition><AdminPage /></PageTransition>} />
+        {/* Hidden admin login — no navbar link */}
+        <Route path="/admin-login" element={<PageTransition><AdminLoginPage /></PageTransition>} />
+        {/* Protected admin dashboard */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedAdminRoute>
+              <PageTransition><AdminPage /></PageTransition>
+            </ProtectedAdminRoute>
+          }
+        />
       </Routes>
     </AnimatePresence>
   );
