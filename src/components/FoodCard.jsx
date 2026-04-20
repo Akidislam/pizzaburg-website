@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Plus, Check } from 'lucide-react';
+import { Plus, Check, Flame } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
-const FoodCard = ({ item, index }) => {
+const FoodCard = ({ item, index, isPopular }) => {
     const { addToCart } = useCart();
     const [added, setAdded] = useState(false);
 
@@ -14,9 +14,19 @@ const FoodCard = ({ item, index }) => {
 
     return (
         <div
-            className="glass-card overflow-hidden opacity-0 animate-fade-in-up"
+            className={`glass-card overflow-hidden opacity-0 animate-fade-in-up relative ${isPopular ? 'ring-2 ring-[var(--color-primary)]' : ''}`}
             style={{ animationDelay: `${index * 0.08}s`, animationFillMode: 'forwards' }}
         >
+            {/* Popular Badge */}
+            {isPopular && (
+                <div className="absolute top-3 right-3 z-10">
+                    <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-xs font-bold shadow-lg shadow-[var(--color-primary)]/40">
+                        <Flame size={14} className="animate-pulse" />
+                        Most Popular
+                    </span>
+                </div>
+            )}
+
             {/* Image */}
             <div className="relative overflow-hidden group">
                 <img
@@ -43,8 +53,8 @@ const FoodCard = ({ item, index }) => {
                 <button
                     onClick={handleAdd}
                     className={`w-full py-2.5 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-300 ${added
-                            ? 'bg-[var(--color-accent)] text-white scale-95'
-                            : 'btn-primary hover:shadow-lg hover:shadow-[var(--color-primary)]/30'
+                        ? 'bg-[var(--color-accent)] text-white scale-95'
+                        : 'btn-primary hover:shadow-lg hover:shadow-[var(--color-primary)]/30'
                         }`}
                 >
                     {added ? (

@@ -1,6 +1,9 @@
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Pizza, Flame, Star, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useCart } from '../context/CartContext';
+import FoodCard from '../components/FoodCard';
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -16,6 +19,33 @@ const itemVariants = {
 };
 
 const HomePage = () => {
+    const { orders, menu } = useCart();
+
+    const popularItems = useMemo(() => {
+        const itemCounts = {};
+        orders.forEach(order => {
+            order.items.forEach(item => {
+                if (!itemCounts[item.id]) itemCounts[item.id] = 0;
+                itemCounts[item.id] += item.quantity;
+            });
+        });
+
+        const sortedIds = Object.entries(itemCounts)
+            .sort(([, a], [, b]) => b - a)
+            .map(([id]) => id);
+
+        const allItems = Object.values(menu).flat();
+
+        let topItems = sortedIds.map(id => allItems.find(item => item.id === id)).filter(Boolean);
+
+        // Fallback to first few items if no orders yet
+        if (topItems.length === 0) {
+            topItems = allItems.slice(0, 3);
+        }
+
+        return topItems.slice(0, 3);
+    }, [orders, menu]);
+
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
@@ -102,6 +132,34 @@ const HomePage = () => {
                             transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
                             className="w-1.5 h-3 rounded-full bg-white/50"
                         />
+                    </div>
+                </motion.div>
+            </section>
+
+            {/* Popular Items Section */}
+            <section className="py-20 px-4 bg-black/20">
+                <motion.div
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, margin: "-100px" }}
+                    variants={containerVariants}
+                    className="max-w-6xl mx-auto"
+                >
+                    <motion.div variants={itemVariants} className="text-center mb-12">
+                        <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+                            <span className="gradient-text">Most Popular</span> Choices
+                        </h2>
+                        <p className="text-[var(--color-text-muted)] max-w-xl mx-auto">
+                            Loved by our customers. Try our top ordered items!
+                        </p>
+                    </motion.div>
+
+                    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        {popularItems.map((item, index) => (
+                            <motion.div key={item.id} variants={itemVariants}>
+                                <FoodCard item={item} index={index} isPopular={true} />
+                            </motion.div>
+                        ))}
                     </div>
                 </motion.div>
             </section>
