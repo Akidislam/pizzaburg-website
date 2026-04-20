@@ -1,33 +1,33 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Inter', 'Segoe UI', sans-serif;
-  --font-display: 'Outfit', 'Segoe UI', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  --font-display: 'Outfit', 'Inter', sans-serif;
 
-  --color-primary: #e74c3c;
-  --color-primary-dark: #c0392b;
-  --color-primary-light: #ff6b5a;
-  --color-secondary: #f39c12;
-  --color-secondary-dark: #d68910;
-  --color-accent: #2ecc71;
-  --color-accent-dark: #27ae60;
-  --color-dark: #1a1a2e;
-  --color-darker: #12121f;
-  --color-surface: #16213e;
-  --color-surface-light: #1e2d4f;
-  --color-surface-lighter: #2a3a5c;
-  --color-text: #f0f0f0;
-  --color-text-muted: #a0aec0;
-  --color-text-dim: #6b7a94;
-  --color-glass: rgba(255, 255, 255, 0.06);
-  --color-glass-border: rgba(255, 255, 255, 0.1);
-  --color-glass-hover: rgba(255, 255, 255, 0.12);
-  --color-success: #2ecc71;
-  --color-warning: #f39c12;
-  --color-danger: #e74c3c;
-  --color-pending: #f39c12;
-  --color-preparing: #3498db;
-  --color-done: #2ecc71;
+  --color-primary: #FF3F34;
+  --color-primary-dark: #D12D23;
+  --color-primary-light: #FF6B62;
+  --color-secondary: #FFA801;
+  --color-secondary-dark: #D18400;
+  --color-accent: #10b981;
+  --color-accent-dark: #059669;
+  --color-dark: #09090b;
+  --color-darker: #000000;
+  --color-surface: #18181b;
+  --color-surface-light: #27272a;
+  --color-surface-lighter: #3f3f46;
+  --color-text: #fafafa;
+  --color-text-muted: #a1a1aa;
+  --color-text-dim: #71717a;
+  --color-glass: rgba(24, 24, 27, 0.4);
+  --color-glass-border: rgba(255, 255, 255, 0.08);
+  --color-glass-hover: rgba(24, 24, 27, 0.6);
+  --color-success: #10b981;
+  --color-warning: #FFA801;
+  --color-danger: #FF3F34;
+  --color-pending: #FFA801;
+  --color-preparing: #3b82f6;
+  --color-done: #10b981;
 }
 
 @layer base {
@@ -253,25 +253,26 @@
 /* Glass morphism */
 .glass {
   background: var(--color-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
   border: 1px solid var(--color-glass-border);
 }
 
 .glass-card {
   background: var(--color-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
   border: 1px solid var(--color-glass-border);
-  border-radius: 16px;
-  transition: all 0.3s ease;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .glass-card:hover {
   background: var(--color-glass-hover);
-  border-color: rgba(255, 255, 255, 0.18);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 /* Gradient text */
@@ -354,8 +355,15 @@
 }
 
 @font-face {
-  font-family: 'Inter';
+  font-family: 'Plus Jakarta Sans';
   font-style: normal;
   font-display: swap;
-  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  src: url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+}
+
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-display: swap;
+  src: url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 }
